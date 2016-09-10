@@ -57,11 +57,13 @@ class Controller {
     /**
      * Initiate render of the view
      *
+     * @param string $classes
+     * @param string $container
      * @return string
      */
-    public function render_view() {
+    public function render_view( $classes = '', $container = 'div') {
 
-        return $this->_view->render();
+        return $this->_view->render( $this->_element, $classes, $container );
 
     }
 
@@ -70,10 +72,11 @@ class Controller {
      *
      * @param string $name
      * @param mixed $value
+     * @param string $description
      */
-    public function set_variable( $name, $value ) {
+    public function set_variable( $name, $value, $description = '' ) {
 
-        $this->_view->set_variable( $name, $value );
+        $this->_view->set_variable( $name, $value, $description  );
 
     }
 
@@ -85,6 +88,17 @@ class Controller {
     public function get_variables() {
 
         return $this->_view->get_variables();
+
+    }
+
+    /**
+     * Show/Hide hits
+     *
+     * @param mixed $value
+     */
+    public function show_hints( $value = true) {
+
+        return $this->_view->show_hints( $value );
 
     }
 
