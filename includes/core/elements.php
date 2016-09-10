@@ -36,14 +36,14 @@ class Elements {
      * @param string $element
      * @return mixed
      */
-    public static function render( $element ) {
+    public static function render( $element, $classes = '', $container = 'div' ) {
 
         if ( $controller_loaded = self::_locate_controller( $element ) ) {
 
             $controller_class_name = 'AZ\\' . self::prepare_controller_class_name( $element );
             $controller = new $controller_class_name( $element );
 
-           return $controller->render_view();
+           return $controller->render_view( $classes, $container );
 
         }
 
@@ -64,7 +64,12 @@ class Elements {
         $controller_file_name = $theme_directory . '/' . $element . '/' . $element . self::ELEMENT_CONTROLLER_FILE_NAME_SUFFIX;
 
         if ( file_exists( $controller_file_name ) ) {
-            require $controller_file_name;
+
+            // Include file if clas does not alredy exist
+            if ( ! class_exists( 'AZ\\' . self::prepare_controller_class_name( $element ) ) ) {
+                require $controller_file_name;
+            }
+
             return true;
         }
 
