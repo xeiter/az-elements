@@ -62,13 +62,77 @@ class View {
 
     }
 
+    /**
+     * Show hints in the view template
+     * @param  bool $value
+     */
+    public function show_hints( $value ) {
+        $this->_show_hints = $value;
+    }
+
+    /**
+     * Render variables hint
+     *
+     * @return string
+     */
+    protected function _render_variables_hint() {
+
+        if ( $this->_show_hints ) {
+
+            $variables_html = '';
+            foreach ( $this->_variables as $variable_name => $variable_options ) {
+                $variables_html .= '<tr>';
+                $variables_html .= '<td style="padding-left: 15px;"><var>$' . $variable_name . '</var></td>';
+                $variables_html .= '<td>' . print_r( $variable_options['value'], true ) . '</td>';
+                $variables_html .= '<td>' . $variable_options['description'] . '</td>';
+                $variables_html .= '</tr>';
+            }
+
+            $html = <<<MULTI
+
+<style type="text/css">
+    .view__hints table { font-size: 12px; }
+</style>
+
+<div class="view__hints panel panel-default">
+
+    <div class="panel-heading">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Available variables <i class="glyphicon glyphicon-zoom-in"></i>
+            </a>
+    </div>
+
+    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th style="padding-left: 15px;"">Variable</th>
+                    <th>Value</th>
+                    <th>Description</th>
+                </tr>
+                {$variables_html}
+            </table>
+        </div>
+    </div>
+
+</div>
+
+MULTI;
+
+            return $html;
+
+        }
+    }
+
 	/**
 	 * Render view template
 	 *
-	 * @param $template
+	 * @param string $element
+	 * @param string $classes
+     * @param string $container
 	 * @return string
 	 */
-	public function render() {
+	public function render( $element, $classes = '', $container = 'div' ) {
 
         $theme_directory = get_stylesheet_directory() . '/' . self::ELEMENT_THEME_DIRECTORY;
 
@@ -78,11 +142,16 @@ class View {
 
             ob_start();
 
-            foreach ( $this->_variables as $variable_name => $variable_value ) {
-                ${$variable_name} = $variable_value;
+            echo $this->_render_variables_hint();
+
+            foreach ( $this->_variables as $variable_name => $variable_options ) {
+                ${$variable_name} = $variable_options['value'];
             }
 
+            $class = 'element__' . $element . ' element-view__' . $this->_template . ' ' . $classes;
+            echo '<' . $container . ' class="' . $class . '">';
             require $view_file_name;
+            echo '</' . $container . '>';
 
             $template_content = str_replace( '``', '"', ob_get_contents() );
 
@@ -105,10 +174,11 @@ class View {
      *
      * @param string $name
      * @param mixed $value
+     * @param string $description
      */
-    public function set_variable( $name, $value ) {
+    public function set_variable( $name, $value, $description = null ) {
 
-        $this->_variables[ $name ] = $value;
+        $this->_variables[ $name ] = [ 'value' => $value, 'description' => $description ];
 
     }
 
