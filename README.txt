@@ -25,6 +25,7 @@ Then, add one line of code to your WordPress template file and the view componen
 2. Activate plugin through the 'Plugins' menu in WordPress
 3. Create the following directory structure inside your theme directory:
 
+```
 <your-theme>
     |--> elements
         |--> [name-of-elemement-1]
@@ -38,6 +39,7 @@ Then, add one line of code to your WordPress template file and the view componen
         |--> people-tiles
             |--> people-tiles-controller.php
             |--> people-tiles-view.php
+```
 
 4. Create  two files in each of the elements' directory:
 
