@@ -27,7 +27,7 @@ Then, add one line of code to your WordPress template file and the view componen
 
 ```
 <your-theme>
-    |--> elements
+    |--> az-elements
         |--> [name-of-elemement-1]
         |--> [name-of-elemement-2]
 
@@ -77,6 +77,19 @@ The view file is just a PHP file that contains HTML and smalled amount of PHP fo
 
 ?>`
 
+5. Add custom SASS files to your elements:
+
+You can add custom SASS files to your elements by creating `<element>/scss` directory and placing the .scss files there.
+
+You will need to register your custom .scss files with the theme so they can compiled and included in the builds. For Sage theme, for example, add the following lines to `<theme>/assets/styles/main.scss` file:
+
+`
+// Elements custom .scss
+@import "../../az-elements/tile/scss/dat";
+@import "../../az-elements/hero/scss/main";
+
+`
+
 == Frequently Asked Questions ==
 
 = What is this for? =
@@ -101,6 +114,10 @@ Please refer to examples for code snippets illustrations. But in short here how 
 5. Create a view template for the theme element to be rendered
 6. Add a call (to any of the theme templates) `<?= AZ\Elements::render( '<name-of-controller>' ); ?>` with
 the element name as a parameter.
+
+= Your `gulp` hangs on compiling a build?
+
+Make sure that all the references to .scss (in `<theme>/assets/styles/main.scss`) are correct
 
 == Screenshots ==
 

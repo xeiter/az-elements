@@ -12,7 +12,7 @@ class Elements {
     /**
      * Location for the elements in the theme
      */
-    const ELEMENT_THEME_DIRECTORY = 'elements';
+    const ELEMENT_THEME_DIRECTORY = 'az-elements';
 
     /**
      * Suffix for the element's controller file name
