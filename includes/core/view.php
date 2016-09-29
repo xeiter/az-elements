@@ -41,13 +41,16 @@ class View {
      *
      * @param string $template
      */
-    public function __construct( $template ) {
+    public function __construct( $template, $arguments = [] ) {
 
         // Set default template
         $this->_template = $template;
 
         // Save the element
         $this->_element = $template;
+
+        // Save the arguments
+        $this->_arguments = $arguments;
 
     }
 
@@ -80,10 +83,19 @@ class View {
         if ( $this->_show_hints ) {
 
             $variables_html = '';
+
             foreach ( $this->_variables as $variable_name => $variable_options ) {
                 $variables_html .= '<tr>';
                 $variables_html .= '<td style="padding-left: 15px;"><var>$' . $variable_name . '</var></td>';
                 $variables_html .= '<td>' . print_r( $variable_options['value'], true ) . '</td>';
+                $variables_html .= '<td>' . $variable_options['description'] . '</td>';
+                $variables_html .= '</tr>';
+            }
+
+            foreach ( $this->_arguments as $variable_name => $variable_value ) {
+                $variables_html .= '<tr>';
+                $variables_html .= '<td style="padding-left: 15px;"><var>$' . $variable_name . '</var></td>';
+                $variables_html .= '<td>' . print_r( $variable_value, true ) . '</td>';
                 $variables_html .= '<td>' . $variable_options['description'] . '</td>';
                 $variables_html .= '</tr>';
             }
@@ -130,6 +142,7 @@ MULTI;
 	 * @param string $element
 	 * @param string $classes
      * @param string $container
+     * @param array $args
 	 * @return string
 	 */
 	public function render( $element, $classes = '', $container = 'div' ) {
@@ -146,6 +159,10 @@ MULTI;
 
             foreach ( $this->_variables as $variable_name => $variable_options ) {
                 ${$variable_name} = $variable_options['value'];
+            }
+
+            foreach ( $this->_arguments as $variable_name => $variable_value ) {
+                ${$variable_name} = $variable_value;
             }
 
             $class = 'element__' . $element . ' element-view__' . $this->_template . ' ' . $classes;

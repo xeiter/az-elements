@@ -17,6 +17,13 @@ class Controller {
     private $_element = null;
 
     /**
+     * Controllers arguments
+     *
+     * @var null|string
+     */
+    protected $_arguments = null;
+
+    /**
      * Controller's view object
      *
      * @var null|View
@@ -26,9 +33,10 @@ class Controller {
     /**
      * Controller constructor.
      */
-    public function __construct( $element ) {
+    public function __construct( $element, $arguments = [] ) {
 
         $this->_element = $element;
+        $this->_arguments = $arguments;
 
         self::run();
         $this->run();
@@ -50,7 +58,7 @@ class Controller {
      */
     public function run() {
 
-        $this->_view = new View( $this->_element );
+        $this->_view = new View( $this->_element, $this->_arguments );
 
     }
 

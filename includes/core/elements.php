@@ -34,16 +34,19 @@ class Elements {
      * Render view using the controller's data
      *
      * @param string $element
+     * @param string $classes
+     * @param string $container
+     * @param array $arguments
      * @return mixed
      */
-    public static function render( $element, $classes = '', $container = 'div' ) {
+    public static function render( $element, $classes = '', $container = 'div', $arguments = [] ) {
 
         if ( $controller_loaded = self::_locate_controller( $element ) ) {
 
             $controller_class_name = 'AZ\\' . self::prepare_controller_class_name( $element );
-            $controller = new $controller_class_name( $element );
+            $controller = new $controller_class_name( $element, $arguments );
 
-           return $controller->render_view( $classes, $container );
+            return $controller->render_view( $classes, $container );
 
         }
 
@@ -86,9 +89,8 @@ class Elements {
      */
     private static function prepare_controller_class_name( $element ) {
 
-        return ucwords($element) . self::ELEMENT_CONTROLLER_CLASS_NAME_SUFFIX;
+        return str_replace(' ', '_' , ucwords(str_replace( '-', ' ', $element ) ) ) . self::ELEMENT_CONTROLLER_CLASS_NAME_SUFFIX;
 
     }
-
 
 }
