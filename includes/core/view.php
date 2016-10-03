@@ -87,7 +87,7 @@ class View {
             foreach ( $this->_variables as $variable_name => $variable_options ) {
                 $variables_html .= '<tr>';
                 $variables_html .= '<td style="padding-left: 15px;"><var>$' . $variable_name . '</var></td>';
-                $variables_html .= '<td>' . print_r( $variable_options['value'], true ) . '</td>';
+                $variables_html .= '<td><pre>' . print_r( $variable_options['value'], true ) . '</pre></td>';
                 $variables_html .= '<td>' . $variable_options['description'] . '</td>';
                 $variables_html .= '</tr>';
             }
