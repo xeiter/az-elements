@@ -166,9 +166,16 @@ MULTI;
             }
 
             $class = 'element__' . $element . ' element-view__' . $this->_template . ' ' . $classes;
-            echo '<' . $container . ' class="' . $class . '">';
+
+            if ( ! is_null( $container ) ) {
+                echo '<' . $container . ' class="' . $class . '">';
+            }
+
             require $view_file_name;
-            echo '</' . $container . '>';
+
+            if ( ! is_null( $container ) ) {
+                echo '</' . $container . '>';
+            }
 
             $template_content = str_replace( '``', '"', ob_get_contents() );
 
