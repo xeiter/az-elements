@@ -168,7 +168,7 @@ MULTI;
             $class = 'element__' . $element . ' element-view__' . $this->_template . ' ' . $classes;
 
             if ( ! is_null( $container ) ) {
-                echo '<' . $container . ' class="' . $class . '">';
+                echo '<' . $container . ' class="' . $class . ' mb6">';
             }
 
             require $view_file_name;
