@@ -165,7 +165,7 @@ MULTI;
                 ${$variable_name} = $variable_value;
             }
 
-            $class = 'element__' . $element . ' element-view__' . $this->_template . ' ' . $classes;
+            $class = 'element element__' . $element . ' element-view__' . $this->_template . ' ' . $classes;
 
             if ( ! is_null( $container ) ) {
                 echo '<' . $container . ' class="' . $class . ' mb6">';
