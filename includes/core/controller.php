@@ -40,6 +40,7 @@ class Controller {
 
         self::run();
         $this->run();
+        
     }
 
     /**
@@ -69,9 +70,9 @@ class Controller {
      * @param string $container
      * @return string
      */
-    public function render_view( $classes = '', $container = 'div') {
+    public function render_view( $classes = '', $container = 'div', $bottom_margin = null ) {
 
-        return $this->_view->render( $this->_element, $classes, $container );
+        return $this->_view->render( $this->_element, $classes, $container, $bottom_margin );
 
     }
 

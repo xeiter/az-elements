@@ -145,7 +145,7 @@ MULTI;
      * @param array $args
 	 * @return string
 	 */
-	public function render( $element, $classes = '', $container = 'div' ) {
+	public function render( $element, $classes = '', $container = 'div', $bottom_margin = null ) {
 
         $theme_directory = get_stylesheet_directory() . '/' . self::ELEMENT_THEME_DIRECTORY;
 
@@ -168,7 +168,7 @@ MULTI;
             $class = 'element element__' . $element . ' element-view__' . $this->_template . ' ' . $classes;
 
             if ( ! is_null( $container ) ) {
-                echo '<' . $container . ' class="' . $class . ' mb6">';
+                echo '<' . $container . ' class="' . $class . ' ' . $bottom_margin . '">';
             }
 
             require $view_file_name;
