@@ -66,6 +66,15 @@ class View {
     }
 
     /**
+     * Get template for this view
+     */
+    public function get_template() {
+
+        return $this->_template;
+
+    }
+
+    /**
      * Show hints in the view template
      * @param  bool $value
      */
@@ -148,44 +157,48 @@ MULTI;
 	public function render( $element, $classes = '', $container = 'div', $bottom_margin = null ) {
 
         $theme_directory = get_stylesheet_directory() . '/' . self::ELEMENT_THEME_DIRECTORY;
+    
+        if ( $this->_template ) { 
 
-        $view_file_name = $theme_directory . '/' . $this->_element . '/' . $this->_template . self::ELEMENT_VIEW_FILE_NAME_SUFFIX;
+            $view_file_name = $theme_directory . '/' . $this->_element . '/' . $this->_template . self::ELEMENT_VIEW_FILE_NAME_SUFFIX;
 
-        if ( file_exists( $view_file_name ) ) {
+            if ( file_exists( $view_file_name ) ) {
 
-            ob_start();
+                ob_start();
 
-            echo $this->_render_variables_hint();
+                echo $this->_render_variables_hint();
 
-            foreach ( $this->_variables as $variable_name => $variable_options ) {
-                ${$variable_name} = $variable_options['value'];
+                foreach ( $this->_variables as $variable_name => $variable_options ) {
+                    ${$variable_name} = $variable_options['value'];
+                }
+
+                foreach ( $this->_arguments as $variable_name => $variable_value ) {
+                    ${$variable_name} = $variable_value;
+                }
+
+                $class = 'element element__' . $element . ' element-view__' . $this->_template . ' ' . $classes;
+
+                if ( ! is_null( $container ) ) {
+                    echo '<' . $container . ' class="' . $class . ' ' . $bottom_margin . '">';
+                }
+
+                require $view_file_name;
+
+                if ( ! is_null( $container ) ) {
+                    echo '</' . $container . '>';
+                }
+
+                $template_content = str_replace( '``', '"', ob_get_contents() );
+
+                ob_end_clean();
+
+                return $template_content;
+
+            } else {
+
+                $this->_process_error( 'View template file was not found: ' . $view_file_name );
+
             }
-
-            foreach ( $this->_arguments as $variable_name => $variable_value ) {
-                ${$variable_name} = $variable_value;
-            }
-
-            $class = 'element element__' . $element . ' element-view__' . $this->_template . ' ' . $classes;
-
-            if ( ! is_null( $container ) ) {
-                echo '<' . $container . ' class="' . $class . ' ' . $bottom_margin . '">';
-            }
-
-            require $view_file_name;
-
-            if ( ! is_null( $container ) ) {
-                echo '</' . $container . '>';
-            }
-
-            $template_content = str_replace( '``', '"', ob_get_contents() );
-
-            ob_end_clean();
-
-            return $template_content;
-
-        } else {
-
-            $this->_process_error( 'View template file was not found: ' . $view_file_name );
 
         }
 
