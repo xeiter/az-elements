@@ -220,6 +220,18 @@ MULTI;
     }
 
     /**
+     * Get view variable
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function get_variable( $name ) {
+
+        return $this->_variables[ $name ];
+
+    }
+
+    /**
 	 * Process an error
 	 *
 	 * @param string $message

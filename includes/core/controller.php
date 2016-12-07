@@ -90,6 +90,18 @@ class Controller {
     }
 
     /**
+     * Get view variable
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function get_variable( $name ) {
+
+        return $this->_view->get_variable( $name ) ['value'];
+
+    }
+
+    /**
      * Get variables
      *
      * @param mixed $value
