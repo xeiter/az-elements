@@ -31,6 +31,13 @@ class Controller {
     private $_view = null;
 
     /**
+     * Specifies whether the view should be rendered
+     * 
+     * @var bool
+     */
+    private $_render_view = true;
+
+    /**
      * Controller constructor.
      */
     public function __construct( $element, $arguments = [] ) {
@@ -72,7 +79,11 @@ class Controller {
      */
     public function render_view( $classes = '', $container = 'div', $bottom_margin = null ) {
 
-        return $this->_view->render( $this->_element, $classes, $container, $bottom_margin );
+        if ( $this->_render_view ) {
+            return $this->_view->render( $this->_element, $classes, $container, $bottom_margin );
+        }
+        
+        return null;
 
     }
 
@@ -120,6 +131,17 @@ class Controller {
     public function show_hints( $value = true) {
 
         return $this->_view->show_hints( $value );
+
+    }
+
+    /**
+     * Set flag that intructs to render (or not) the view
+     *
+     * @param bool $value
+     */
+    public function set_render_view( $value ) {
+
+        $this->_render_view = $value;
 
     }
 
