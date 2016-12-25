@@ -156,6 +156,8 @@ MULTI;
 	 */
 	public function render( $element, $classes = '', $container = 'div', $bottom_margin = null ) {
 
+        global $post;
+
         $theme_directory = get_stylesheet_directory() . '/' . self::ELEMENT_THEME_DIRECTORY;
     
         if ( $this->_template ) { 
@@ -191,6 +193,11 @@ MULTI;
                 $template_content = str_replace( '``', '"', ob_get_contents() );
 
                 ob_end_clean();
+
+                // If AZ_Cache is available, attempted to save a transient
+                if ( class_exists( 'AZ_Cache' ) ) {
+                    set_transient( \AZ_Cache::get_post_elements_transient_name( $post->ID, $element ), $template_content );
+                }
 
                 return $template_content;
 

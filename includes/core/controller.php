@@ -38,12 +38,23 @@ class Controller {
     private $_render_view = true;
 
     /**
+     * ID of the current post
+     * 
+     * @var int
+     * @access private
+     */
+    private $_post_id = null;
+
+    /**
      * Controller constructor.
      */
     public function __construct( $element, $arguments = [] ) {
 
+        global $post;
+
         $this->_element = $element;
         $this->_arguments = $arguments;
+        $this->_post_id = $post->ID;
 
         self::run();
         $this->run();
@@ -142,6 +153,18 @@ class Controller {
     public function set_render_view( $value ) {
 
         $this->_render_view = $value;
+
+    }
+
+    /**
+     * Get the current post's ID
+     *
+     * @access public
+     * @return int
+     */
+    public function get_post_id() {
+
+        return $this->_post_id;
 
     }
 

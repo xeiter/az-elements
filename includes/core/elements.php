@@ -35,11 +35,29 @@ class Elements {
      *
      * @param string $element
      * @param string $classes
-     * @param string $container
+     * @param string $cache_this
      * @param array $arguments
      * @return mixed
      */
-    public static function render( $element, $classes = '', $container = 'div', $arguments = [] ) {
+    public static function render( $element, $classes = '', $cache_this = true, $arguments = [] ) {
+
+        global $post;
+
+        if ( class_exists( 'AZ_Cache' ) ) {
+
+            $transient_name = \AZ_Cache::get_post_elements_transient_name( $post->ID, $element );
+
+            if ($cache_this) {
+                $cached_element = get_transient( $transient_name );
+
+                dump($cached_element, '! ' . $transient_name);
+
+                if ( $cached_element ) {
+                    return $cached_element;
+                }
+            }
+
+        }
 
         if ( $controller_loaded = self::_locate_controller( $element ) ) {
 
@@ -47,7 +65,7 @@ class Elements {
             $controller = new $controller_class_name( $element, $arguments );
             $bottom_margin = isset( $arguments['no_bottom_margin'] ) && $arguments['no_bottom_margin'] ? null : 'mb5';    
 
-            return $controller->render_view( $classes, $container, $bottom_margin );
+            return $controller->render_view( $classes, 'div', $bottom_margin );
 
         }
 
