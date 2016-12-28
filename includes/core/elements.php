@@ -35,37 +35,53 @@ class Elements {
      *
      * @param string $element
      * @param string $classes
-     * @param string $cache_this
+     * @param string $container
      * @param array $arguments
+     * @param bool $cache_this
      * @return mixed
      */
-    public static function render( $element, $classes = '', $cache_this = true, $arguments = [] ) {
+    public static function render( $element, $classes = '', $container = 'div', $arguments = [], $cache_this = true ) {
 
-        global $post;
+        global $wp_admin_bar;
 
-        if ( class_exists( 'AZ_Cache' ) ) {
+        $post_id = get_queried_object_id();
 
-            $transient_name = \AZ_Cache::get_post_elements_transient_name( $post->ID, $element );
+        $cache_settings = get_post_meta( $post_id, 'az_cache_disable' );
+        $post_element_cache_disabled = is_array( $cache_settings ) && in_array( 'post-elements', $cache_settings );
+
+        if ( false === $post_element_cache_disabled && class_exists( 'AZ_Cache' ) ) {
+
+            $transient_name = \AZ_Cache::get_post_elements_transient_name( $post_id, $element );
 
             if ($cache_this) {
                 $cached_element = get_transient( $transient_name );
 
-                dump($cached_element, '! ' . $transient_name);
+                // dump( $cached_element, 'Using cached version of ' . $element );
 
                 if ( $cached_element ) {
+
+                    if ( $wp_admin_bar ) {
+                        $wp_admin_bar->add_menu( array( 'parent' => 'az_elements', 'title' => __( $element . ' | CACHED' ), 'id' => 'az-cache-post-elements-' . $element, 'href' => '#' ) );
+                    }
+
                     return $cached_element;
+
                 }
             }
 
+        }
+
+        if ( $wp_admin_bar ) {
+            $wp_admin_bar->add_menu(array('parent' => 'az_elements', 'title' => __($element), 'id' => 'az-cache-post-elements-' . $element, 'href' => '#'));
         }
 
         if ( $controller_loaded = self::_locate_controller( $element ) ) {
 
             $controller_class_name = 'AZ\\' . self::prepare_controller_class_name( $element );
             $controller = new $controller_class_name( $element, $arguments );
-            $bottom_margin = isset( $arguments['no_bottom_margin'] ) && $arguments['no_bottom_margin'] ? null : 'mb5';    
+            $bottom_margin = isset( $arguments['no_bottom_margin'] ) && $arguments['no_bottom_margin'] ? null : 'mb5';
 
-            return $controller->render_view( $classes, 'div', $bottom_margin );
+            return $controller->render_view( $classes, $container, $bottom_margin );
 
         }
 

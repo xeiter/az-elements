@@ -156,7 +156,7 @@ MULTI;
 	 */
 	public function render( $element, $classes = '', $container = 'div', $bottom_margin = null ) {
 
-        global $post;
+        $post_id = get_queried_object_id();
 
         $theme_directory = get_stylesheet_directory() . '/' . self::ELEMENT_THEME_DIRECTORY;
     
@@ -194,9 +194,9 @@ MULTI;
 
                 ob_end_clean();
 
-                // If AZ_Cache is available, attempted to save a transient
+                // If AZ_Cache is available, attempt to save a transient
                 if ( class_exists( 'AZ_Cache' ) ) {
-                    set_transient( \AZ_Cache::get_post_elements_transient_name( $post->ID, $element ), $template_content );
+                    set_transient( \AZ_Cache::get_post_elements_transient_name( $post_id, $element ), $template_content );
                 }
 
                 return $template_content;
