@@ -189,8 +189,10 @@ MULTI;
                 if ( ! is_null( $container ) ) {
                     echo '</' . $container . '>';
                 }
-
+                
                 $template_content = str_replace( '``', '"', ob_get_contents() );
+
+                $template_content = '<!------- Element start: ' . $element . ' -------->' . "\n" . $template_content ;
 
                 ob_end_clean();
 

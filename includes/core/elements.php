@@ -79,8 +79,8 @@ class Elements {
 
             $controller_class_name = 'AZ\\' . self::prepare_controller_class_name( $element );
             $controller = new $controller_class_name( $element, $arguments );
-            $bottom_margin = isset( $arguments['no_bottom_margin'] ) && $arguments['no_bottom_margin'] ? null : 'mb5';
-
+            // $bottom_margin = isset( $arguments['no_bottom_margin'] ) && $arguments['no_bottom_margin'] ? null : 'mb5';
+            $bottom_margin = null;
             return $controller->render_view( $classes, $container, $bottom_margin );
 
         }
