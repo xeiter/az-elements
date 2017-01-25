@@ -168,4 +168,19 @@ class Controller {
 
     }
 
+    /**
+     * Get the value of the provided argument.
+     * Use default value if the arguments don't have one with provided name
+     *
+     * @param string $name
+     * @param mixed $default_value
+     * @return mixed
+     * @access public
+     */
+    public function get_argument_value( $name, $default_value = null ) {
+
+        return isset( $this->_arguments[ $name ] ) ? $this->_arguments[ $name ] : $default_value;
+
+    }
+
 }
