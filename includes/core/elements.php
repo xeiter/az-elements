@@ -49,7 +49,7 @@ class Elements {
         $cache_settings = get_post_meta( $post_id, 'az_cache_disable' );
         $post_element_cache_disabled = is_array( $cache_settings ) && in_array( 'post-elements', $cache_settings );
 
-        if ( false === $post_element_cache_disabled && class_exists( 'AZ_Cache' ) ) {
+        if ( get_theme_mod('az_post_elements_caching') && false === $post_element_cache_disabled && class_exists( 'AZ_Cache' ) ) {
 
             $transient_name = \AZ_Cache::get_post_elements_transient_name( $post_id, $element );
 

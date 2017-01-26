@@ -197,7 +197,7 @@ MULTI;
                 ob_end_clean();
 
                 // If AZ_Cache is available, attempt to save a transient
-                if ( class_exists( 'AZ_Cache' ) ) {
+                if ( get_theme_mod('az_post_elements_caching') && class_exists( 'AZ_Cache' ) ) {
                     set_transient( \AZ_Cache::get_post_elements_transient_name( $post_id, $element ), $template_content );
                 }
 
