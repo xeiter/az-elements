@@ -24,6 +24,25 @@ class Elements {
      */
     const ELEMENT_CONTROLLER_CLASS_NAME_SUFFIX = '_Controller';
 
+    public static function _check_user_access_rights() {
+
+        if ( class_exists( '\UserAccessManager' ) && class_exists( '\UamAccessHandler' ) ) {
+
+            $post = get_queried_object();
+
+            $oUamAccessManager = new \UserAccessManager();
+            $oUamAccessHandler = new \UamAccessHandler( $oUamAccessManager );
+
+            return $oUamAccessHandler->checkObjectAccess( $post->post_type, $post->ID );
+
+        } else {
+
+            return true;
+
+        }
+
+    }
+
     /**
      * Elements constructor.
      */
@@ -41,6 +60,10 @@ class Elements {
      * @return mixed
      */
     public static function render( $element, $classes = '', $container = 'div', $arguments = [], $cache_this = true ) {
+
+        if ( isset( $arguments['restrictable'] ) && $arguments['restrictable'] && ! self::_check_user_access_rights() ) {
+            return false;
+        }
 
         global $wp_admin_bar;
 
