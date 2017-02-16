@@ -145,22 +145,22 @@ MULTI;
         }
     }
 
-	/**
-	 * Render view template
-	 *
-	 * @param string $element
-	 * @param string $classes
+    /**
+     * Render view template
+     *
+     * @param string $element
+     * @param string $classes
      * @param string $container
      * @param array $args
-	 * @return string
-	 */
-	public function render( $element, $classes = '', $container = 'div', $bottom_margin = null ) {
+     * @return string
+     */
+    public function render( $element, $classes = '', $container = 'div', $bottom_margin = null ) {
 
         $post_id = get_queried_object_id();
 
         $theme_directory = get_stylesheet_directory() . '/' . self::ELEMENT_THEME_DIRECTORY;
-    
-        if ( $this->_template ) { 
+
+        if ( $this->_template && ! preg_match( '/-empty$/', $this->_template ) ) {
 
             $view_file_name = $theme_directory . '/' . $this->_element . '/' . $this->_template . self::ELEMENT_VIEW_FILE_NAME_SUFFIX;
 
@@ -189,7 +189,7 @@ MULTI;
                 if ( ! is_null( $container ) ) {
                     echo '</' . $container . '>';
                 }
-                
+
                 $template_content = str_replace( '``', '"', ob_get_contents() );
 
                 $template_content = '<!------- Element start: ' . $element . ' -------->' . "\n" . $template_content ;
@@ -213,7 +213,7 @@ MULTI;
 
         return false;
 
-	}
+    }
 
     /**
      * Set view variable
@@ -241,28 +241,28 @@ MULTI;
     }
 
     /**
-	 * Process an error
-	 *
-	 * @param string $message
-	 *
-	 * @throws Exception
-	 * @access private
-	 */
-	public function _process_error( $message ) {
+     * Process an error
+     *
+     * @param string $message
+     *
+     * @throws Exception
+     * @access private
+     */
+    public function _process_error( $message ) {
 
-		throw new Exception( $message );
+        throw new Exception( $message );
 
-	}
+    }
 
-	/**
-	 * Convert class to string
-	 *
-	 * @return string
-	 * @access public
-	 */
-	public function __toString() {
-		return $this->render();
-	}
+    /**
+     * Convert class to string
+     *
+     * @return string
+     * @access public
+     */
+    public function __toString() {
+        return $this->render();
+    }
 
     /**
      * Get variables
@@ -271,7 +271,7 @@ MULTI;
      */
     public function get_variables() {
 
-       return $this->_variables;
+        return $this->_variables;
 
     }
 
