@@ -36,6 +36,12 @@ class View {
      */
     private $_variables = array();
 
+	/**
+	 * Show hints or not
+	 * @var bool
+	 */
+	private $_show_hints = false;
+
     /**
      * View constructor.
      *
