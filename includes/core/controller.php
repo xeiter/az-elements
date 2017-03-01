@@ -183,4 +183,27 @@ class Controller {
 
     }
 
+	/**
+	 * Get view contents by element and view
+	 *
+	 * @param string $element
+	 * @param string $view
+	 * @return string
+	 * @access public
+	 */
+    public function get_view_contents( $element, $view ) {
+
+		$theme_directory = get_stylesheet_directory() . '/az-elements';
+		$view_filename = $theme_directory . '/' . $element . '/' . $view . '-view.php';
+
+		if ( file_exists( $view_filename ) ) {
+			$view_contents = file_get_contents( $view_filename );
+		} else {
+			$view_contents = false;
+		}
+
+		return $view_contents;
+
+	}
+
 }

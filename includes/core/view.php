@@ -151,6 +151,21 @@ MULTI;
         }
     }
 
+	/**
+	 * Get filename of the view
+	 *
+	 * @return string
+	 * @access public
+	 */
+    public function get_view_filename() {
+
+		$theme_directory = get_stylesheet_directory() . '/' . self::ELEMENT_THEME_DIRECTORY;
+		$view_file_name = $theme_directory . '/' . $this->_element . '/' . $this->_template . self::ELEMENT_VIEW_FILE_NAME_SUFFIX;
+
+		return $view_file_name;
+
+	}
+
     /**
      * Render view template
      *
@@ -164,11 +179,9 @@ MULTI;
 
         $post_id = get_queried_object_id();
 
-        $theme_directory = get_stylesheet_directory() . '/' . self::ELEMENT_THEME_DIRECTORY;
-
         if ( $this->_template && ! preg_match( '/-empty$/', $this->_template ) ) {
 
-            $view_file_name = $theme_directory . '/' . $this->_element . '/' . $this->_template . self::ELEMENT_VIEW_FILE_NAME_SUFFIX;
+            $view_file_name = $this->get_view_filename();
 
             if ( file_exists( $view_file_name ) ) {
 
