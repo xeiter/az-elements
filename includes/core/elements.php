@@ -65,23 +65,23 @@ class Elements {
             return false;
         }
 
-        global $wp_admin_bar;
+		global $wp_admin_bar;
 
-        $post_id = get_queried_object_id();
+		$post_id = get_queried_object_id();
+		$cache_id_suffix = isset( $arguments['cache-id-suffix'] ) ? $arguments['cache-id-suffix'] : '';
 
-        $cache_settings = get_post_meta( $post_id, 'az_cache_disable' );
-        $post_element_cache_disabled = is_array( $cache_settings ) && in_array( 'post-elements', $cache_settings );
+		$cache_settings = get_post_meta( $post_id, 'az_cache_disable' );
+		$post_element_cache_disabled = is_array( $cache_settings ) && in_array( 'post-elements', $cache_settings );
 
-        if ( get_theme_mod('az_post_elements_caching') && false === $post_element_cache_disabled && class_exists( 'AZ_Cache' ) ) {
+		if ( get_theme_mod('az_post_elements_caching') && false === $post_element_cache_disabled && class_exists( 'AZ_Cache' ) ) {
 
-            $transient_name = \AZ_Cache::get_post_elements_transient_name( $post_id, $element );
+			$transient_name = \AZ_Cache::get_post_elements_transient_name( $post_id, $element, $cache_id_suffix );
 
-            if ($cache_this) {
-                $cached_element = get_transient( $transient_name );
+			if ($cache_this) {
 
-                // dump( $cached_element, 'Using cached version of ' . $element );
+				$cached_element = get_transient( $transient_name );
 
-                if ( $cached_element ) {
+				if ( $cached_element ) {
 
                     if ( $wp_admin_bar ) {
                         $wp_admin_bar->add_menu( array( 'parent' => 'az_elements', 'title' => __( $element . ' | CACHED' ), 'id' => 'az-cache-post-elements-' . $element, 'href' => '#' ) );
